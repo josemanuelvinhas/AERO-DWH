@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
     <name>dim_meteo</name>
@@ -429,8 +428,8 @@
     <created_user>-</created_user>
     <created_date>2021/03/29 10:29:06.048</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2021/03/29 10:29:06.048</modified_date>
-    <key_for_session_key/>
+    <modified_date>2021/03/29 11:20:01.328</modified_date>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -448,7 +447,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename/>
+    <filename>${Internal.Transformation.Repository.Directory}/fuentes-externas/FE_CLIMA.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
