@@ -106,6 +106,7 @@ CREATE TABLE FACT_VUELOS (
     KEY DIM_HORA_HECHO_VUELOS_FK (CLAVE_HORA)
 );
 
-
-
-
+DROP USER 'user_dwh'@'localhost';
+CREATE USER 'user_dwh'@'localhost' IDENTIFIED BY 'user_dwh';
+GRANT ALL PRIVILEGES ON * . * TO 'user_dwh'@'localhost';
+FLUSH PRIVILEGES;
