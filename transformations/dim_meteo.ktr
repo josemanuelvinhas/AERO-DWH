@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
     <name>dim_meteo</name>
@@ -433,6 +434,28 @@
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
+    <notepad>
+      <note>En la discretización solo coge los dos primeros valores **Revisar**
+En el script de Eli, lo pruebo y todos los valores sale "mediano" (asi que al menos en mi pc no va)</note>
+      <xloc>664</xloc>
+      <yloc>229</yloc>
+      <width>518</width>
+      <heigth>42</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
   <connection>
     <name>dwh_connection</name>
@@ -497,6 +520,11 @@
     </hop>
     <hop>
       <from>Add sequence</from>
+      <to>Valor JavaScript modificado</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Valor JavaScript modificado</from>
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
@@ -547,7 +575,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>D:\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
+    <filename>C:\Users\Yomiquesh\Desktop\AERO-DWH-main\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -706,6 +734,80 @@
     <GUI>
       <xloc>304</xloc>
       <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Valor JavaScript modificado</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var lluvias;
+var temperaturas;
+
+if (PRECIPITACIONES == 0){
+	lluvias = "Nulas";	
+} else if (0 &lt; PRECIPITACIONES &lt;= 15){
+		lluvias = "Escasas";	
+} else if (15 &lt; PRECIPITACIONES &lt;= 60){
+		lluvias = "Abundantes";	
+} else if (PRECIPITACIONES > 60){
+		lluvias = "Extremas";	
+}  
+
+if (TEMPERATURA &lt; 10){
+	temperaturas = "Baja";	
+
+} else if (25 &lt; TEMPERATURA &lt;= 35){
+		temperaturas = "Alta";	
+} else if (10 &lt; TEMPERATURA &lt;= 25){
+		temperaturas = "Normal";	
+} else if (TEMPERATURA > 35){
+		temperaturas = "Extrema";	
+}</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>lluvias</name>
+        <rename>lluvias</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>temperaturas</name>
+        <rename>temperaturas</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>558</xloc>
+      <yloc>243</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
