@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>dim_persona</name>
+    <name>load_dim_persona</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -430,15 +431,15 @@
     <created_date>2021/04/14 13:00:31.121</created_date>
     <modified_user>-</modified_user>
     <modified_date>2021/04/14 13:00:31.121</modified_date>
-    <key_for_session_key/>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
     <notepad>
       <note>Hay que ver que se hace con la edad del empleado, porque no está, o se calcula o se arreglan todos los sql
 </note>
-      <xloc>48</xloc>
-      <yloc>16</yloc>
+      <xloc>16</xloc>
+      <yloc>0</yloc>
       <width>568</width>
       <heigth>41</heigth>
       <fontname>Segoe UI</fontname>
@@ -512,10 +513,65 @@
       </attribute>
     </attributes>
   </connection>
+  <connection>
+    <name>aero_dwh_connection</name>
+    <server>localhost</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>aero_dwh</database>
+    <port>3306</port>
+    <username>user_dwh</username>
+    <password>Encrypted 2be98afc86aa7f2e4be0aab62e196b8d2</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>3306</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>STREAM_RESULTS</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <order>
     <hop>
       <from>Entrada Tabla Empleado</from>
-      <to>Ordenar filas</to>
+      <to>Ordenar filas de empleados</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -524,36 +580,135 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Ordenar filas</from>
-      <to>Join Empleados</to>
+      <from>Ordenar filas de empleados</from>
+      <to>Join Empleados VIP</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Ordenar filas 2</from>
-      <to>Join Empleados</to>
+      <to>Join Empleados VIP</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Entrada Tabla Pasajero</from>
-      <to>Ordenar filas 3</to>
+      <from>Entrada Tabla Pasajeros 2</from>
+      <to>Ordenar filas de pasajeros 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Ordenar filas 3</from>
-      <to>Join Pasajeros</to>
+      <from>Ordenar filas de pasajeros 2</from>
+      <to>Join Pasajeros VIP</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Join Empleados</from>
-      <to>Join Pasajeros</to>
+      <from>Join Empleados VIP</from>
+      <to>Join Pasajeros VIP</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Join Pasajeros</from>
+      <from>Join Pasajeros VIP</from>
       <to>Discretización</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Discretización</from>
+      <to>Búsqueda/actualización en dimensión</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Discretización</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var edades;
+var sueldo_discretizado;
+var discapacidad_discretizada;
+
+if (EDAD &lt;= 18){
+	edades = "Joven";	
+} else if (19 &lt; EDAD &lt; 65){
+		edades = "Adulto";	
+} else if (EDAD >= 65){
+		edades = "Tercera Edad";	
+}
+
+if (SUELDO == 0 | SUELDO == "null" ){
+	sueldo_discretizado = "0";	
+} else if (0 &lt; SUELDO &lt;= 1000){
+		sueldo_discretizado = "1";	
+} else if (1000 &lt; SUELDO &lt;= 2000){
+		sueldo_discretizado = "2";	
+} else if (2000 &lt; SUELDO &lt;= 5000){
+		sueldo_discretizado = "3";	
+} else if (SUELDO > 5000){
+		sueldo_discretizado = "4";	
+}
+
+if (DISCAPACIDAD == 0){
+		discapacidad_discretizada = "1";	
+} else if (0 &lt; DISCAPACIDAD &lt;= 24){
+		discapacidad_discretizada = "2";	
+} else if (24 &lt; DISCAPACIDAD &lt;= 49){
+		discapacidad_discretizada = "3";	
+} else if (49 &lt; DISCAPACIDAD &lt;= 70){
+		discapacidad_discretizada = "4";	
+} else if (DISCAPACIDAD > 75){
+		discapacidad_discretizada = "5";	
+}</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>edades</name>
+        <rename>edades</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>sueldo_discretizado</name>
+        <rename>sueldo_discretizado</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>discapacidad_discretizada</name>
+        <rename>discapacidad_discretizada</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>800</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Entrada Tabla Empleado</name>
     <type>TableInput</type>
@@ -755,12 +910,12 @@ FROM aero.empleado
     </remotesteps>
     <GUI>
       <xloc>160</xloc>
-      <yloc>192</yloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Entrada Tabla Pasajero</name>
+    <name>Entrada Tabla Pasajeros 2</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -782,7 +937,6 @@ FROM aero.empleado
 , DIRECCION
 , DISCAPACIDAD
 , PROFESION
-, SUELDO
 , ULTIMA_ACTUALIZACION
 FROM aero.pasajero
 </sql>
@@ -799,7 +953,7 @@ FROM aero.pasajero
         <name>PASAPORTE</name>
         <length>20</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>PASAPORTE</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -822,7 +976,7 @@ FROM aero.pasajero
         <name>EDAD</name>
         <length>4</length>
         <precision>0</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>EDAD</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>,</decimal_symbol>
@@ -845,7 +999,7 @@ FROM aero.pasajero
         <name>SEXO</name>
         <length>10</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>SEXO</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -868,7 +1022,7 @@ FROM aero.pasajero
         <name>PAIS_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>PAIS_ORIGEN</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -891,7 +1045,7 @@ FROM aero.pasajero
         <name>LOCALIDAD_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>LOCALIDAD_ORIGEN</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -914,7 +1068,7 @@ FROM aero.pasajero
         <name>PROVINCIA_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>PROVINCIA_ORIGEN</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -937,7 +1091,7 @@ FROM aero.pasajero
         <name>PROCEDENCIA</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>PROCEDENCIA</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -960,7 +1114,7 @@ FROM aero.pasajero
         <name>DIRECCION</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>DIRECCION</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -983,7 +1137,7 @@ FROM aero.pasajero
         <name>DISCAPACIDAD</name>
         <length>9</length>
         <precision>0</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>DISCAPACIDAD</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>,</decimal_symbol>
@@ -1006,32 +1160,9 @@ FROM aero.pasajero
         <name>PROFESION</name>
         <length>30</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>PROFESION</comments>
         <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Number</type>
-        <storagetype>normal</storagetype>
-        <name>SUELDO</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
-        <comments>SUELDO</comments>
-        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
         <currency_symbol/>
@@ -1052,7 +1183,7 @@ FROM aero.pasajero
         <name>ULTIMA_ACTUALIZACION</name>
         <length>0</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla 2</origin>
+        <origin>Entrada Tabla Pasajero</origin>
         <comments>ULTIMA_ACTUALIZACION</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -1079,8 +1210,8 @@ FROM aero.pasajero
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>96</yloc>
+      <xloc>192</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1189,12 +1320,12 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>160</xloc>
-      <yloc>336</yloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Join Empleados</name>
+    <name>Join Empleados VIP</name>
     <type>MergeJoin</type>
     <description/>
     <distribute>Y</distribute>
@@ -1205,8 +1336,8 @@ FROM aero.pasajerovip
       <schema_name/>
     </partitioning>
     <join_type>INNER</join_type>
-    <step1>Entrada Tabla Empleado</step1>
-    <step2>Entrada Tabla Pasajero VIP</step2>
+    <step1>Ordenar filas de empleados</step1>
+    <step2>Ordenar filas 2</step2>
     <keys_1>
       <key>DNI_EMPLEADO</key>
     </keys_1>
@@ -1223,12 +1354,12 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>432</xloc>
-      <yloc>256</yloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Join Pasajeros</name>
+    <name>Join Pasajeros VIP</name>
     <type>MergeJoin</type>
     <description/>
     <distribute>Y</distribute>
@@ -1239,8 +1370,8 @@ FROM aero.pasajerovip
       <schema_name/>
     </partitioning>
     <join_type>INNER</join_type>
-    <step1>Ordenar filas 3</step1>
-    <step2>Join Empleados</step2>
+    <step1>Ordenar filas de pasajeros 2</step1>
+    <step2>Join Empleados VIP</step2>
     <keys_1>
       <key>PASAPORTE</key>
     </keys_1>
@@ -1262,7 +1393,7 @@ FROM aero.pasajerovip
     </GUI>
   </step>
   <step>
-    <name>Ordenar filas</name>
+    <name>Ordenar filas de empleados</name>
     <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -1299,7 +1430,7 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>304</xloc>
-      <yloc>192</yloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1341,12 +1472,12 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>304</xloc>
-      <yloc>336</yloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Ordenar filas 3</name>
+    <name>Ordenar filas de pasajeros 2</name>
     <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -1382,14 +1513,14 @@ FROM aero.pasajerovip
       </output>
     </remotesteps>
     <GUI>
-      <xloc>432</xloc>
-      <yloc>112</yloc>
+      <xloc>368</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Discretización</name>
-    <type>ScriptValueMod</type>
+    <name>Búsqueda/actualización en dimensión</name>
+    <type>DimensionLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1398,75 +1529,97 @@ FROM aero.pasajerovip
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var edades;
-var sueldos;
-var discapacidad;
-
-if (EDAD &lt;= 18){
-	edades = "Joven";	
-} else if (19 &lt; EDAD &lt; 65){
-		edades = "Adulto";	
-} else if (EDAD >= 65){
-		edades = "Tercera Edad";	
-}
-
-if (SUELDO == 0){
-	sueldos = "0";	
-} else if (0 &lt; SUELDO &lt;= 1000){
-		sueldos = "1";	
-} else if (1000 &lt; SUELDO &lt;= 2000){
-		sueldos = "2";	
-} else if (2000 &lt; SUELDO &lt;= 5000){
-		sueldos = "3";	
-} else if (SUELDO > 5000){
-		sueldos = "4";	
-}
-
-if (DISCAPACIDAD == 0){
-	discapacidad = "1";	
-} else if (0 &lt; DISCAPACIDAD &lt;= 24){
-		discapacidad = "2";	
-} else if (24 &lt; DISCAPACIDAD &lt;= 49){
-		discapacidad = "3";	
-} else if (49 &lt; DISCAPACIDAD &lt;= 70){
-		discapacidad = "4";	
-} else if (DISCAPACIDAD > 75){
-		discapacidad = "5";	
-}</jsScript_script>
-      </jsScript>
-    </jsScripts>
+    <schema>aero_dwh</schema>
+    <table>dim_personas</table>
+    <connection>aero_dwh_connection</connection>
+    <commit>100</commit>
+    <update>Y</update>
     <fields>
+      <key>
+        <name>PASAPORTE</name>
+        <lookup>PASAPORTE</lookup>
+      </key>
+      <key>
+        <name>DNI_EMPLEADO</name>
+        <lookup>DNI_EMPLEADO</lookup>
+      </key>
+      <date>
+        <name>ULTIMA_ACTUALIZACION</name>
+        <from>VALIDO_DESDE</from>
+        <to>VALIDO_HASTA</to>
+      </date>
       <field>
-        <name>edades</name>
-        <rename>edades</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
+        <name>EDAD</name>
+        <lookup>EDAD</lookup>
+        <update>Insert</update>
       </field>
       <field>
-        <name>sueldos</name>
-        <rename>sueldos</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
+        <name>SEXO</name>
+        <lookup>SEXO</lookup>
+        <update>Insert</update>
       </field>
       <field>
-        <name>discapacidad</name>
-        <rename>discapacidad</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>Y</replace>
+        <name>PAIS_ORIGEN</name>
+        <lookup>PAIS_ORIGEN</lookup>
+        <update>Insert</update>
       </field>
+      <field>
+        <name>LOCALIDAD_ORIGEN</name>
+        <lookup>LOCALIDAD_ORIGEN</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>PROVINCIA_ORIGEN</name>
+        <lookup>PROVINCIA_ORIGEN</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>PROCEDENCIA</name>
+        <lookup>PROCEDENCIA</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>discapacidad_discretizada</name>
+        <lookup>DISCAPACIDAD</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>PROFESION</name>
+        <lookup>PROFESION</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>ULTIMA_ACTUALIZACION</name>
+        <lookup>ULTIMA_ACTUALIZACION</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>CARGO</name>
+        <lookup>CARGO</lookup>
+        <update>Insert</update>
+      </field>
+      <field>
+        <name>sueldo_discretizado</name>
+        <lookup>SUELDO</lookup>
+        <update>Insert</update>
+      </field>
+      <return>
+        <name>PERSONA_KEY</name>
+        <rename/>
+        <creation_method>autoinc</creation_method>
+        <use_autoinc>Y</use_autoinc>
+        <version>VERSION</version>
+      </return>
     </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>5000</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1476,8 +1629,8 @@ if (DISCAPACIDAD == 0){
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>192</yloc>
+      <xloc>960</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
