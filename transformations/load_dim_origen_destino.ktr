@@ -555,7 +555,7 @@
     <hop>
       <from>Valor JavaScript modificado</from>
       <to>Salida Tabla</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Unión por clave</from>
@@ -585,6 +585,11 @@
     <hop>
       <from>max_dim_destino_last_update</from>
       <to>Entrada Tabla Recorrido</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Valor JavaScript modificado</from>
+      <to>Insert / update</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -809,7 +814,7 @@ WHERE ULTIMA_ACTUALIZACION > ?
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>D:\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_DEMOGRAFIA.txt</name>
+      <name>C:\Users\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_DEMOGRAFIA.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1325,6 +1330,79 @@ FROM   dim_origen_destino</sql>
     <GUI>
       <xloc>96</xloc>
       <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Insert / update</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connetion</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_origen_destino</table>
+      <key>
+        <name>ID_RECORRIDO</name>
+        <field>ID_RECORRIDO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>CIUDAD_DESTINO</name>
+        <rename>CIUDAD_DESTINO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>CIUDAD_ORIGEN</name>
+        <rename>CIUDAD_ORIGEN</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PAIS_ORIGEN</name>
+        <rename>PAIS_ORIGEN</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PAIS_DESTINO</name>
+        <rename>PAIS_DESTINO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ULTIMA_ACTUALIZACION</name>
+        <rename>ULTIMA_ACTUALIZACION</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ANHO</name>
+        <rename>ANHO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>NUMERO_HABITANTES_PAIS</name>
+        <rename>NUMERO_HABITANTES_PAIS</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

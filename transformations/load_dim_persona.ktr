@@ -726,8 +726,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>192</yloc>
+      <xloc>944</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -820,8 +820,8 @@ if (DISCAPACIDAD == 0){
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>192</yloc>
+      <xloc>752</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1025,7 +1025,7 @@ FROM aero.empleado
       </output>
     </remotesteps>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>144</xloc>
       <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1134,7 +1134,7 @@ FROM aero.pasajerovip
       </output>
     </remotesteps>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>144</xloc>
       <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1435,7 +1435,7 @@ FROM aero.pasajero
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>144</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1503,8 +1503,8 @@ FROM aero.pasajero
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
-      <yloc>192</yloc>
+      <xloc>576</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
