@@ -616,7 +616,6 @@
     </hop>
   </order>
   <step>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
     <name>Búsqueda/actualización en dimensión</name>
     <type>DimensionLookup</type>
     <description/>
@@ -727,14 +726,12 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1024</xloc>
+      <xloc>960</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-=======
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
     <name>Discretización</name>
     <type>ScriptValueMod</type>
     <description/>
@@ -1034,11 +1031,7 @@ FROM aero.empleado
     </GUI>
   </step>
   <step>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
     <name>Entrada Tabla Pasajero VIP</name>
-=======
-    <name>Entrada Tabla Pasajeros 2</name>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -1050,21 +1043,8 @@ FROM aero.empleado
     </partitioning>
     <connection>aero conn</connection>
     <sql>SELECT
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
   DNI_EMPLEADO
 , PASAPORTE
-=======
-  PASAPORTE
-, EDAD
-, SEXO
-, PAIS_ORIGEN
-, LOCALIDAD_ORIGEN
-, PROVINCIA_ORIGEN
-, PROCEDENCIA
-, DIRECCION
-, DISCAPACIDAD
-, PROFESION
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
 , ULTIMA_ACTUALIZACION
 FROM aero.pasajerovip
 </sql>
@@ -1081,13 +1061,8 @@ FROM aero.pasajerovip
         <name>DNI_EMPLEADO</name>
         <length>20</length>
         <precision>-1</precision>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <origin>Entrada Tabla 3</origin>
         <comments>DNI_EMPLEADO</comments>
-=======
-        <origin>Entrada Tabla Pasajero</origin>
-        <comments>PASAPORTE</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1106,21 +1081,12 @@ FROM aero.pasajerovip
       <value-meta>
         <type>String</type>
         <storagetype>normal</storagetype>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <name>PASAPORTE</name>
         <length>20</length>
         <precision>-1</precision>
         <origin>Entrada Tabla 3</origin>
         <comments>PASAPORTE</comments>
         <conversion_Mask/>
-=======
-        <name>EDAD</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Pasajero</origin>
-        <comments>EDAD</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
         <currency_symbol/>
@@ -1141,13 +1107,8 @@ FROM aero.pasajerovip
         <name>ULTIMA_ACTUALIZACION</name>
         <length>0</length>
         <precision>-1</precision>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <origin>Entrada Tabla 3</origin>
         <comments>ULTIMA_ACTUALIZACION</comments>
-=======
-        <origin>Entrada Tabla Pasajero</origin>
-        <comments>SEXO</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1218,11 +1179,7 @@ FROM aero.pasajero
         <length>20</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>PASAPORTE</comments>
-=======
-        <comments>PAIS_ORIGEN</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1241,21 +1198,12 @@ FROM aero.pasajero
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <name>EDAD</name>
         <length>4</length>
         <precision>0</precision>
         <origin>Entrada Tabla Pasajero</origin>
         <comments>EDAD</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
-=======
-        <name>LOCALIDAD_ORIGEN</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Pasajero</origin>
-        <comments>LOCALIDAD_ORIGEN</comments>
-        <conversion_Mask/>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
         <currency_symbol/>
@@ -1277,11 +1225,7 @@ FROM aero.pasajero
         <length>10</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>SEXO</comments>
-=======
-        <comments>PROVINCIA_ORIGEN</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1304,11 +1248,7 @@ FROM aero.pasajero
         <length>50</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>PAIS_ORIGEN</comments>
-=======
-        <comments>PROCEDENCIA</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1331,11 +1271,7 @@ FROM aero.pasajero
         <length>50</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>LOCALIDAD_ORIGEN</comments>
-=======
-        <comments>DIRECCION</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1352,43 +1288,13 @@ FROM aero.pasajero
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
-=======
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>DISCAPACIDAD</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Pasajero</origin>
-        <comments>DISCAPACIDAD</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>PROVINCIA_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>PROVINCIA_ORIGEN</comments>
-=======
-        <comments>PROFESION</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1405,7 +1311,6 @@ FROM aero.pasajero
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
       <value-meta>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <type>String</type>
         <storagetype>normal</storagetype>
         <name>PROCEDENCIA</name>
@@ -1430,19 +1335,12 @@ FROM aero.pasajero
       </value-meta>
       <value-meta>
         <type>String</type>
-=======
-        <type>Timestamp</type>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <storagetype>normal</storagetype>
         <name>DIRECCION</name>
         <length>50</length>
         <precision>-1</precision>
         <origin>Entrada Tabla Pasajero</origin>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
         <comments>DIRECCION</comments>
-=======
-        <comments>ULTIMA_ACTUALIZACION</comments>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
@@ -1458,49 +1356,6 @@ FROM aero.pasajero
         <date_format_timezone>Europe/Paris</date_format_timezone>
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
-=======
-    </row-meta>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>192</xloc>
-      <yloc>144</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Entrada Tabla Pasajero VIP</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero conn</connection>
-    <sql>SELECT
-  DNI_EMPLEADO
-, PASAPORTE
-, ULTIMA_ACTUALIZACION
-FROM aero.pasajerovip
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
@@ -1580,13 +1435,8 @@ FROM aero.pasajerovip
       </output>
     </remotesteps>
     <GUI>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
       <xloc>192</xloc>
       <yloc>144</yloc>
-=======
-      <xloc>160</xloc>
-      <yloc>400</yloc>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1635,11 +1485,7 @@ FROM aero.pasajerovip
       <method>none</method>
       <schema_name/>
     </partitioning>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
     <join_type>LEFT OUTER</join_type>
-=======
-    <join_type>INNER</join_type>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
     <step1>Ordenar filas de pasajeros 2</step1>
     <step2>Join Empleados VIP</step2>
     <keys_1>
@@ -1663,11 +1509,7 @@ FROM aero.pasajerovip
     </GUI>
   </step>
   <step>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
     <name>Ordenar filas 2</name>
-=======
-    <name>Ordenar filas de empleados</name>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
     <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -1704,11 +1546,7 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>304</xloc>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
       <yloc>400</yloc>
-=======
-      <yloc>256</yloc>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1750,11 +1588,7 @@ FROM aero.pasajerovip
     </remotesteps>
     <GUI>
       <xloc>304</xloc>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
       <yloc>256</yloc>
-=======
-      <yloc>400</yloc>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1797,125 +1631,6 @@ FROM aero.pasajerovip
     <GUI>
       <xloc>368</xloc>
       <yloc>144</yloc>
-<<<<<<< HEAD:transformations/load_dim_persona.ktr
-=======
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Búsqueda/actualización en dimensión</name>
-    <type>DimensionLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <schema>aero_dwh</schema>
-    <table>dim_personas</table>
-    <connection>aero_dwh_connection</connection>
-    <commit>100</commit>
-    <update>Y</update>
-    <fields>
-      <key>
-        <name>PASAPORTE</name>
-        <lookup>PASAPORTE</lookup>
-      </key>
-      <key>
-        <name>DNI_EMPLEADO</name>
-        <lookup>DNI_EMPLEADO</lookup>
-      </key>
-      <date>
-        <name>ULTIMA_ACTUALIZACION</name>
-        <from>VALIDO_DESDE</from>
-        <to>VALIDO_HASTA</to>
-      </date>
-      <field>
-        <name>EDAD</name>
-        <lookup>EDAD</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>SEXO</name>
-        <lookup>SEXO</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>PAIS_ORIGEN</name>
-        <lookup>PAIS_ORIGEN</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>LOCALIDAD_ORIGEN</name>
-        <lookup>LOCALIDAD_ORIGEN</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>PROVINCIA_ORIGEN</name>
-        <lookup>PROVINCIA_ORIGEN</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>PROCEDENCIA</name>
-        <lookup>PROCEDENCIA</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>discapacidad_discretizada</name>
-        <lookup>DISCAPACIDAD</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>PROFESION</name>
-        <lookup>PROFESION</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>ULTIMA_ACTUALIZACION</name>
-        <lookup>ULTIMA_ACTUALIZACION</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>CARGO</name>
-        <lookup>CARGO</lookup>
-        <update>Insert</update>
-      </field>
-      <field>
-        <name>sueldo_discretizado</name>
-        <lookup>SUELDO</lookup>
-        <update>Insert</update>
-      </field>
-      <return>
-        <name>PERSONA_KEY</name>
-        <rename/>
-        <creation_method>autoinc</creation_method>
-        <use_autoinc>Y</use_autoinc>
-        <version>VERSION</version>
-      </return>
-    </fields>
-    <sequence/>
-    <min_year>1900</min_year>
-    <max_year>2199</max_year>
-    <cache_size>5000</cache_size>
-    <preload_cache>N</preload_cache>
-    <use_start_date_alternative>N</use_start_date_alternative>
-    <start_date_alternative>none</start_date_alternative>
-    <start_date_field_name/>
-    <useBatch>N</useBatch>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>960</xloc>
-      <yloc>288</yloc>
->>>>>>> f9b80ab94a8d97e27cdffa8744ddf00c11a2a19c:transformations/dim_persona.ktr
       <draw>Y</draw>
     </GUI>
   </step>
