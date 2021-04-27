@@ -557,14 +557,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>296</xloc>
-      <yloc>112</yloc>
+      <xloc>240</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>JSON input</name>
-    <type>JsonInput</type>
+    <name>Añadir Si/No</name>
+    <type>Constant</type>
     <description/>
     <distribute>N</distribute>
     <custom_distribution/>
@@ -573,148 +573,30 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <include>N</include>
-    <include_field/>
-    <rownum>N</rownum>
-    <addresultfile>N</addresultfile>
-    <readurl>N</readurl>
-    <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
-    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
-    <ignoreMissingPath>Y</ignoreMissingPath>
-    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
-    <rownum_field/>
-    <file>
-      <name>${Internal.Entry.Current.Directory}/FE_EVENTOS.json</name>
-      <filemask/>
-      <exclude_filemask/>
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-      <name>C:\Users\Yomiquesh\Desktop\AERO-DWH-main\fuentes-externas\FE_EVENTOS.json</name>
-      <filemask/>
-      <exclude_filemask/>
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-    </file>
     <fields>
       <field>
-        <name>CIUDAD</name>
-        <path>$[*].CIUDAD</path>
+        <name>Si</name>
         <type>String</type>
         <format/>
         <currency/>
         <decimal/>
         <group/>
+        <nullif>Si</nullif>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
+        <set_empty_string>N</set_empty_string>
       </field>
       <field>
-        <name>PAIS</name>
-        <path>$[*].PAIS</path>
+        <name>No</name>
         <type>String</type>
         <format/>
         <currency/>
         <decimal/>
         <group/>
+        <nullif>No</nullif>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>FECHA</name>
-        <path>$[*].FECHA</path>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>HORA</name>
-        <path>$[*].HORA</path>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>EVENTO</name>
-        <path>$[*].EVENTO</path>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-    </fields>
-    <limit>0</limit>
-    <IsInFields>N</IsInFields>
-    <IsAFile>N</IsAFile>
-    <valueField/>
-    <shortFileFieldName/>
-    <pathFieldName/>
-    <hiddenFieldName/>
-    <lastModificationTimeFieldName/>
-    <uriNameFieldName/>
-    <rootUriNameFieldName/>
-    <extensionFieldName/>
-    <sizeFieldName/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>96</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Ordenar filas</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>EVENTO</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
+        <set_empty_string>N</set_empty_string>
       </field>
     </fields>
     <attributes/>
@@ -726,8 +608,214 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>176</yloc>
+      <xloc>528</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Columnas Vacias Categoria a 'No'</name>
+    <type>Calculator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <failIfNoFile>N</failIfNoFile>
+    <calculation>
+      <field_name>tipo_evento_cultural_concierto</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_cultural_concierto</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_cultural_exposicion</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_cultural_exposicion</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_cultural_convencion</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_cultural_convencion</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_cultural_espectaculo_artistico</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_cultural_espectaculo</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_cultural_festival</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_cultural_festival</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_social_festividad</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_social_festividad</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_deportivo_exhibicion</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_deportivo_exhibicion</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_deportivo_competicion</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_deportivo_competicion</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_academico_simposio</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_academico_simposio</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_academico_seminario</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_academico_seminario</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_academico_taller</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_academico_taller</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>tipo_evento_corporativo</field_name>
+      <calc_type>NVL</calc_type>
+      <field_a>tmp_tipo_evento_corporativo</field_a>
+      <field_b>No</field_b>
+      <field_c/>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1072</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -945,264 +1033,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>752</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Añadir Si/No</name>
-    <type>Constant</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>Si</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>Si</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>No</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>No</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>624</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Columnas Vacias Categoria a 'No'</name>
-    <type>Calculator</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <failIfNoFile>N</failIfNoFile>
-    <calculation>
-      <field_name>tipo_evento_cultural_concierto</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_cultural_concierto</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_cultural_exposicion</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_cultural_exposicion</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_cultural_convencion</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_cultural_convencion</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_cultural_espectaculo_artistico</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_cultural_espectaculo</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_cultural_festival</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_cultural_festival</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_social_festividad</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_social_festividad</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_deportivo_exhibicion</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_deportivo_exhibicion</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_deportivo_competicion</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_deportivo_competicion</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_academico_simposio</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_academico_simposio</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_academico_seminario</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_academico_seminario</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_academico_taller</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_academico_taller</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>tipo_evento_corporativo</field_name>
-      <calc_type>NVL</calc_type>
-      <field_a>tmp_tipo_evento_corporativo</field_a>
-      <field_b>No</field_b>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>944</xloc>
+      <xloc>864</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1225,130 +1056,28 @@
       <schema>aero_dwh</schema>
       <table>dim_evento</table>
       <key>
-        <name>CIUDAD</name>
-        <field>CIUDAD_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>PAIS</name>
-        <field>PAIS_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>FECHA</name>
-        <field>FECHA_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>HORA</name>
-        <field>HORA_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
         <name>EVENTO_KEY</name>
         <field>EVENTO_KEY</field>
         <condition>=</condition>
         <name2/>
       </key>
-      <key>
-        <name>tmp_EVENTO</name>
-        <field>EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_cultural_concierto</name>
-        <field>tipo_evento_cultural_concierto</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_cultural_exposicion</name>
-        <field>tipo_evento_cultural_exposicion</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_cultural_convencion</name>
-        <field>tipo_evento_cultural_convencion</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_cultural_espectaculo_artistico</name>
-        <field>tipo_evento_cultural_espectaculo_artistico</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_cultural_festival</name>
-        <field>tipo_evento_cultural_festival</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_social_festividad</name>
-        <field>tipo_evento_social_festividad</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_deportivo_exhibicion</name>
-        <field>tipo_evento_deportivo_exhibicion</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_deportivo_competicion</name>
-        <field>tipo_evento_deportivo_competicion</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_academico_simposio</name>
-        <field>tipo_evento_academico_simposio</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_academico_seminario</name>
-        <field>tipo_evento_academico_seminario</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_academico_taller</name>
-        <field>tipo_evento_academico_taller</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>tipo_evento_corporativo</name>
-        <field>tipo_evento_corporativo</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
       <value>
-        <name>CIUDAD</name>
+        <name>CIUDAD_EVENTO</name>
         <rename>CIUDAD</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>PAIS</name>
+        <name>PAIS_EVENTO</name>
         <rename>PAIS</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>FECHA</name>
+        <name>FECHA_EVENTO</name>
         <rename>FECHA</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>HORA</name>
+        <name>HORA_EVENTO</name>
         <rename>HORA</rename>
         <update>Y</update>
       </value>
@@ -1358,7 +1087,7 @@
         <update>Y</update>
       </value>
       <value>
-        <name>tmp_EVENTO</name>
+        <name>EVENTO</name>
         <rename>tmp_EVENTO</rename>
         <update>Y</update>
       </value>
@@ -1432,7 +1161,171 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1136</xloc>
+      <xloc>1248</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>JSON input</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name>D:\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_EVENTOS.json</name>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>CIUDAD</name>
+        <path>$[*].CIUDAD</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PAIS</name>
+        <path>$[*].PAIS</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>FECHA</name>
+        <path>$[*].FECHA</path>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HORA</name>
+        <path>$[*].HORA</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>EVENTO</name>
+        <path>$[*].EVENTO</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>N</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField/>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Ordenar filas</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>EVENTO</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1476,8 +1369,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>80</yloc>
+      <xloc>672</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
