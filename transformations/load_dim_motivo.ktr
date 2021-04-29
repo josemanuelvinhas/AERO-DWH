@@ -650,7 +650,7 @@ FROM aero.billete
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
+      <xloc>400</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
