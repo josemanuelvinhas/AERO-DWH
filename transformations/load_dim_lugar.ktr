@@ -555,12 +555,7 @@
     <hop>
       <from>Entrada Tabla Recorrido</from>
       <to>Ordenar filas</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Valor JavaScript modificado</from>
-      <to>Insert / update</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Normalización de fila</from>
@@ -609,7 +604,12 @@
     </hop>
     <hop>
       <from>Select values 3</from>
-      <to>Valor JavaScript modificado</to>
+      <to>Number range</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Number range</from>
+      <to>Insert / update</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -929,49 +929,39 @@ FROM aero.recorrido
     </partitioning>
     <connection>aero_dwh_connetion</connection>
     <commit>100</commit>
-    <update_bypassed>N</update_bypassed>
+    <update_bypassed>Y</update_bypassed>
     <lookup>
       <schema>aero_dwh</schema>
-      <table>dim_origen_destino</table>
+      <table>dim_lugar</table>
       <key>
-        <name>ID_RECORRIDO</name>
-        <field>ID_RECORRIDO</field>
+        <name>CIUDAD</name>
+        <field>CIUDAD</field>
         <condition>=</condition>
         <name2/>
       </key>
       <value>
-        <name>CIUDAD_DESTINO</name>
-        <rename>CIUDAD_DESTINO</rename>
+        <name>CIUDAD</name>
+        <rename>CIUDAD</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>CIUDAD_ORIGEN</name>
-        <rename>CIUDAD_ORIGEN</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>PAIS_ORIGEN</name>
-        <rename>PAIS_ORIGEN</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>PAIS_DESTINO</name>
-        <rename>PAIS_DESTINO</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>ULTIMA_ACTUALIZACION</name>
-        <rename>ULTIMA_ACTUALIZACION</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>ANHO</name>
-        <rename>ANHO</rename>
+        <name>PAIS</name>
+        <rename>PAIS</rename>
         <update>Y</update>
       </value>
       <value>
         <name>NUMERO_HABITANTES_PAIS</name>
-        <rename>NUMERO_HABITANTES_PAIS</rename>
+        <rename>valor_habitantes</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>CLIMA</name>
+        <rename>CLIMA</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>MICROCLIMA</name>
+        <rename>MICROCLIMA</rename>
         <update>Y</update>
       </value>
     </lookup>
@@ -984,7 +974,7 @@ FROM aero.recorrido
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1264</xloc>
+      <xloc>1312</xloc>
       <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1123,61 +1113,6 @@ FROM aero.recorrido
     </GUI>
   </step>
   <step>
-    <name>Valor JavaScript modificado</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var valor_habitantes;
-
-if (NUMERO_HABITANTES_PAIS &lt; 1000000){
-	valor_habitantes = "Pequeño";	
-} else if (1000000 &lt;= NUMERO_HABITANTES_PAIS &lt; 20000000){
-		valor_habitantes = "Mediano";	
-} else if (20000000 &lt;= NUMERO_HABITANTES_PAIS &lt; 100000000){
-		valor_habitantes = "Grande";	
-} else if (NUMERO_HABITANTES_PAIS >= 100000000){
-		valor_habitantes = "Muy grande";	
-}  
-</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>valor_habitantes</name>
-        <rename>valor_habitantes</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1040</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Select values</name>
     <type>SelectValues</type>
     <description/>
@@ -1211,7 +1146,7 @@ if (NUMERO_HABITANTES_PAIS &lt; 1000000){
         <type>Integer</type>
         <length>15</length>
         <precision>0</precision>
-        <conversion_mask/>
+        <conversion_mask>#</conversion_mask>
         <date_format_lenient>false</date_format_lenient>
         <date_format_locale/>
         <date_format_timezone/>
@@ -1525,7 +1460,7 @@ if (NUMERO_HABITANTES_PAIS &lt; 1000000){
     <name>Select values 3</name>
     <type>SelectValues</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -1557,6 +1492,56 @@ if (NUMERO_HABITANTES_PAIS &lt; 1000000){
     </remotesteps>
     <GUI>
       <xloc>848</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Number range</name>
+    <type>NumberRange</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <inputField>NUMERO_HABITANTES_PAIS</inputField>
+    <outputField>valor_habitantes</outputField>
+    <fallBackValue>unknown</fallBackValue>
+    <rules>
+      <rule>
+        <lower_bound>-1.7976931348623157E308</lower_bound>
+        <upper_bound>1000000.0</upper_bound>
+        <value>Pequenho</value>
+      </rule>
+      <rule>
+        <lower_bound>1000000.0</lower_bound>
+        <upper_bound>2.0E7</upper_bound>
+        <value>Mediano</value>
+      </rule>
+      <rule>
+        <lower_bound>2.0E7</lower_bound>
+        <upper_bound>1.0E8</upper_bound>
+        <value>Grande</value>
+      </rule>
+      <rule>
+        <lower_bound>1.0E8</lower_bound>
+        <upper_bound>1.7976931348623157E308</upper_bound>
+        <value>Muy grande</value>
+      </rule>
+    </rules>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1040</xloc>
       <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
