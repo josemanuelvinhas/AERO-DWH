@@ -693,23 +693,15 @@
         <stream_name>anho</stream_name>
       </field>
       <field>
-        <column_name>trimestre_nombre</column_name>
-        <stream_name>trimestre_nombre</stream_name>
-      </field>
-      <field>
-        <column_name>trimestre_numero</column_name>
-        <stream_name>trimestre_numero</stream_name>
-      </field>
-      <field>
-        <column_name>dia_de_semana</column_name>
-        <stream_name>dia_de_semana</stream_name>
+        <column_name>trimestre</column_name>
+        <stream_name>trimestre</stream_name>
       </field>
       <field>
         <column_name>es_fin_de_semana</column_name>
         <stream_name>es_fin_de_semana</stream_name>
       </field>
       <field>
-        <column_name>clave_fecha</column_name>
+        <column_name>fecha_key</column_name>
         <stream_name>clave_fecha</stream_name>
       </field>
     </fields>
@@ -801,7 +793,7 @@ switch(parseInt(mes_numero)){
 }
 
 //get the local yes/no values
-var yes = local_yes.getString();
+var si = local_yes.getString();
 var no = local_no.getString();
 
 //inicializar para calculos de dias de la semana
@@ -839,7 +831,7 @@ var clave_fecha = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;</j
       <field>
         <name>fecha</name>
         <rename>fecha</rename>
-        <type>String</type>
+        <type>Date</type>
         <length>-1</length>
         <precision>-1</precision>
         <replace>N</replace>
