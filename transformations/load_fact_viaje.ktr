@@ -563,6 +563,11 @@
     </hop>
     <hop>
       <from>Load dim motivo</from>
+      <to>Load dim lugarDestino</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Load dim motivo</from>
       <to>Load dim lugarOrigen</to>
       <enabled>Y</enabled>
     </hop>
@@ -1197,7 +1202,7 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
     <name>Load dim motivo</name>
     <type>DBLookup</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -1236,7 +1241,7 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>256</xloc>
+      <xloc>224</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1268,6 +1273,12 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
         <condition>=</condition>
         <name2/>
       </key>
+      <key>
+        <name>PAIS_ORIGEN</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
       <value>
         <name>LUGAR_KEY</name>
         <rename>ORIGEN_LUGAR_KEY</rename>
@@ -1284,8 +1295,62 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>384</xloc>
-      <yloc>240</yloc>
+      <xloc>448</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Load dim lugarDestino</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_lugar</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>CIUDAD_DESTINO</name>
+        <field>CIUDAD</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PAIS_DESTINO</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>DESTINO_LUGAR_KEY</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>448</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
