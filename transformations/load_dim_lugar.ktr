@@ -760,7 +760,7 @@ FROM aero.recorrido
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\eliar\Desktop\AERO-DWH-main\AERO-DWH-main\fuentes-externas\FE_DEMOGRAFIA.txt</name>
+      <name>C:\Users\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_DEMOGRAFIA.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -927,7 +927,7 @@ FROM aero.recorrido
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>C:\Users\eliar\Desktop\AERO-DWH-main\AERO-DWH-main\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
+    <filename>C:\Users\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>

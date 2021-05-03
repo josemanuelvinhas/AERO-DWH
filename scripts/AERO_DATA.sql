@@ -1,3 +1,4 @@
+﻿SET NAMES 'utf8';
 USE AERO;
 
 insert into AEROLINEA (ID_AEROLINEA, TELEFONO, NOMBRE, DIRECCION) values (1, '3094159654', '40-Mile Air', '8 Dovetail Parkway');

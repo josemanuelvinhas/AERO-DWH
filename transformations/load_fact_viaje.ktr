@@ -430,7 +430,7 @@
     <created_date>2021/04/30 08:38:41.050</created_date>
     <modified_user>-</modified_user>
     <modified_date>2021/04/30 08:38:41.050</modified_date>
-    <key_for_session_key/>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -549,7 +549,7 @@
     <hop>
       <from>max_fact_viaje_last_update</from>
       <to>Entrada Tabla Billete Y Vuelo</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Entrada Tabla Billete Y Vuelo</from>
@@ -571,7 +571,696 @@
       <to>Load dim lugarOrigen</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Load dim lugarDestino</from>
+      <to>Sort rows</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Load dim lugarOrigen</from>
+      <to>Sort rows 2</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Merge join</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 2</from>
+      <to>Select values</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Merge join</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Load dim lugarDestino</from>
+      <to>Load dim lugarOrigen</to>
+      <enabled>N</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Entrada Tabla Billete Y Vuelo</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_conn</connection>
+    <sql>SELECT
+  vuelo.ID_VUELO
+, vuelo.ID_RECORRIDO
+, vuelo.DURACION_ESTIMADA
+, vuelo.DURACION_REAL
+, vuelo.FECHA
+, vuelo.ULTIMA_ACTUALIZACION
+, billete.ID_VUELO
+, billete.ID_PASAJERO
+, billete.MOTIVO_VIAJE
+, billete.PRECIO
+, billete.ULTIMA_ACTUALIZACION
+, recorrido.CIUDAD_DESTINO
+, recorrido.PAIS_DESTINO
+, recorrido.PAIS_ORIGEN
+, recorrido.CIUDAD_ORIGEN
+, recorrido.DISTANCIA
+, recorrido.ULTIMA_ACTUALIZACION
+
+FROM aero.vuelo,aero.billete,aero.recorrido
+WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RECORRIDO
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>ID_VUELO</name>
+        <length>4</length>
+        <precision>0</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ID_VUELO</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>ID_RECORRIDO</name>
+        <length>4</length>
+        <precision>0</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ID_RECORRIDO</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>DURACION_ESTIMADA</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>DURACION_ESTIMADA</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>DURACION_REAL</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>DURACION_REAL</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>FECHA</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>FECHA</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>ULTIMA_ACTUALIZACION</name>
+        <length>0</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ULTIMA_ACTUALIZACION</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>ID_VUELO_1</name>
+        <length>4</length>
+        <precision>0</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ID_VUELO</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ID_PASAJERO</name>
+        <length>20</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ID_PASAJERO</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>MOTIVO_VIAJE</name>
+        <length>40</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>MOTIVO_VIAJE</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>PRECIO</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>PRECIO</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>ULTIMA_ACTUALIZACION_1</name>
+        <length>0</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ULTIMA_ACTUALIZACION</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>CIUDAD_DESTINO</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>CIUDAD_DESTINO</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>PAIS_DESTINO</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>PAIS_DESTINO</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>PAIS_ORIGEN</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>PAIS_ORIGEN</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>CIUDAD_ORIGEN</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>CIUDAD_ORIGEN</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>DISTANCIA</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>DISTANCIA</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Timestamp</type>
+        <storagetype>normal</storagetype>
+        <name>ULTIMA_ACTUALIZACION_2</name>
+        <length>0</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ULTIMA_ACTUALIZACION</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>464</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Load dim lugarDestino</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_lugar</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>CIUDAD_DESTINO</name>
+        <field>CIUDAD</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PAIS_DESTINO</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>DESTINO_LUGAR_KEY</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>448</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Load dim lugarOrigen</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_lugar</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>CIUDAD_ORIGEN</name>
+        <field>CIUDAD</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PAIS_ORIGEN</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>ORIGEN_LUGAR_KEY</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>400</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Load dim motivo</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_motivo</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>MOTIVO_VIAJE</name>
+        <field>MOTIVO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>MOTIVO_KEY</name>
+        <rename>MOTIVO_KEY</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>224</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener fecha_key</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var simpleDateFormat   = java.text.SimpleDateFormat("D");
+//4 digitos representacion del anho, ejemplo:  2007
+simpleDateFormat.applyPattern("yyyy");
+var anho              = "" + simpleDateFormat.format(FECHA);
+//numero mes en anho, 1..12
+simpleDateFormat.applyPattern("MM");
+var mes_numero      = simpleDateFormat.format(FECHA);
+
+//dia en mes: 1..31
+simpleDateFormat.applyPattern("d");
+var dia_en_mes      = simpleDateFormat.format(FECHA);
+var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>fecha_key</name>
+        <rename>fecha_key</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>624</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>max_fact_viaje_last_update</name>
     <type>TableInput</type>
@@ -643,8 +1332,8 @@ FROM fact_viaje
     </GUI>
   </step>
   <step>
-    <name>Entrada Tabla Billete Y Vuelo</name>
-    <type>TableInput</type>
+    <name>Merge join</name>
+    <type>MergeJoin</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -653,481 +1342,15 @@ FROM fact_viaje
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_conn</connection>
-    <sql>SELECT
-  vuelo.ID_VUELO
-, vuelo.ID_RECORRIDO
-, vuelo.DURACION_ESTIMADA
-, vuelo.DURACION_REAL
-, vuelo.FECHA
-, vuelo.ULTIMA_ACTUALIZACION
-, billete.ID_VUELO
-, billete.ID_PASAJERO
-, billete.MOTIVO_VIAJE
-, billete.PRECIO
-, billete.ULTIMA_ACTUALIZACION
-, recorrido.ID_RECORRIDO
-, recorrido.CIUDAD_DESTINO
-, recorrido.PAIS_DESTINO
-, recorrido.PAIS_ORIGEN
-, recorrido.CIUDAD_ORIGEN
-, recorrido.DISTANCIA
-, recorrido.ULTIMA_ACTUALIZACION
-
-FROM aero.vuelo,aero.billete,aero.recorrido
-WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RECORRIDO
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>coalesce(
-		max(ultima_actualizacion),
-		'1970-01-01'
-	)</name>
-        <length>19</length>
-        <precision>-1</precision>
-        <origin>max_fact_viaje_last_update</origin>
-        <comments>coalesce(
-		max(ultima_actualizacion),
-		'1970-01-01'
-	)</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>ID_VUELO</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ID_VUELO</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>ID_RECORRIDO</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ID_RECORRIDO</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Number</type>
-        <storagetype>normal</storagetype>
-        <name>DURACION_ESTIMADA</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>DURACION_ESTIMADA</comments>
-        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Number</type>
-        <storagetype>normal</storagetype>
-        <name>DURACION_REAL</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>DURACION_REAL</comments>
-        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Date</type>
-        <storagetype>normal</storagetype>
-        <name>FECHA</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>FECHA</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>ULTIMA_ACTUALIZACION</name>
-        <length>0</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ULTIMA_ACTUALIZACION</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>ID_VUELO_1</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ID_VUELO</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>ID_PASAJERO</name>
-        <length>20</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ID_PASAJERO</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>MOTIVO_VIAJE</name>
-        <length>40</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>MOTIVO_VIAJE</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>PRECIO</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>PRECIO</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>ULTIMA_ACTUALIZACION_1</name>
-        <length>0</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ULTIMA_ACTUALIZACION</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>ID_RECORRIDO_1</name>
-        <length>4</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ID_RECORRIDO</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>CIUDAD_DESTINO</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>CIUDAD_DESTINO</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>PAIS_DESTINO</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>PAIS_DESTINO</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>PAIS_ORIGEN</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>PAIS_ORIGEN</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>CIUDAD_ORIGEN</name>
-        <length>50</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>CIUDAD_ORIGEN</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>DISTANCIA</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>DISTANCIA</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>ULTIMA_ACTUALIZACION_2</name>
-        <length>0</length>
-        <precision>-1</precision>
-        <origin>Entrada Tabla Billete Y Vuelo</origin>
-        <comments>ULTIMA_ACTUALIZACION</comments>
-        <conversion_Mask/>
-        <decimal_symbol>,</decimal_symbol>
-        <grouping_symbol>.</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_ES</date_format_locale>
-        <date_format_timezone>Europe/Paris</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-    </row-meta>
+    <join_type>INNER</join_type>
+    <step1>Sort rows</step1>
+    <step2>Select values</step2>
+    <keys_1>
+      <key>ID_VUELO</key>
+    </keys_1>
+    <keys_2>
+      <key>ID_VUELO</key>
+    </keys_2>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1137,51 +1360,37 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
       </output>
     </remotesteps>
     <GUI>
-      <xloc>464</xloc>
-      <yloc>96</yloc>
+      <xloc>752</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Obtener fecha_key</name>
-    <type>ScriptValueMod</type>
+    <name>Sort rows</name>
+    <type>SortRows</type>
     <description/>
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var simpleDateFormat   = java.text.SimpleDateFormat("D");
-//4 digitos representacion del anho, ejemplo:  2007
-simpleDateFormat.applyPattern("yyyy");
-var anho              = "" + simpleDateFormat.format(FECHA);
-//numero mes en anho, 1..12
-simpleDateFormat.applyPattern("MM");
-var mes_numero      = simpleDateFormat.format(FECHA);
-
-//dia en mes: 1..31
-simpleDateFormat.applyPattern("d");
-var dia_en_mes      = simpleDateFormat.format(FECHA);
-var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
-</jsScript_script>
-      </jsScript>
-    </jsScripts>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>fecha_key</name>
-        <rename>fecha_key</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
+        <name>ID_VUELO</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
       </field>
     </fields>
     <attributes/>
@@ -1193,62 +1402,14 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>624</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Load dim motivo</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_motivo</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>MOTIVO_VIAJE</name>
-        <field>MOTIVO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>MOTIVO_KEY</name>
-        <rename>MOTIVO_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
+      <xloc>560</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Load dim lugarOrigen</name>
-    <type>DBLookup</type>
+    <name>Sort rows 2</name>
+    <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1257,35 +1418,23 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_lugar</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>CIUDAD_ORIGEN</name>
-        <field>CIUDAD</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>PAIS_ORIGEN</name>
-        <field>PAIS</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>LUGAR_KEY</name>
-        <rename>ORIGEN_LUGAR_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>ID_VUELO</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1295,14 +1444,14 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
+      <xloc>496</xloc>
       <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Load dim lugarDestino</name>
-    <type>DBLookup</type>
+    <name>Select values</name>
+    <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1311,35 +1460,72 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_lugar</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>coalesce(
+		max(ultima_actualizacion),
+		'1970-01-01'
+	)</name>
+      </remove>
+      <remove>
+        <name>ID_RECORRIDO</name>
+      </remove>
+      <remove>
+        <name>DURACION_ESTIMADA</name>
+      </remove>
+      <remove>
+        <name>DURACION_REAL</name>
+      </remove>
+      <remove>
+        <name>FECHA</name>
+      </remove>
+      <remove>
+        <name>ULTIMA_ACTUALIZACION</name>
+      </remove>
+      <remove>
+        <name>ID_VUELO_1</name>
+      </remove>
+      <remove>
+        <name>ID_PASAJERO</name>
+      </remove>
+      <remove>
+        <name>MOTIVO_VIAJE</name>
+      </remove>
+      <remove>
+        <name>PRECIO</name>
+      </remove>
+      <remove>
+        <name>ULTIMA_ACTUALIZACION_1</name>
+      </remove>
+      <remove>
+        <name>ID_RECORRIDO_1</name>
+      </remove>
+      <remove>
         <name>CIUDAD_DESTINO</name>
-        <field>CIUDAD</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
+      </remove>
+      <remove>
         <name>PAIS_DESTINO</name>
-        <field>PAIS</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>LUGAR_KEY</name>
-        <rename>DESTINO_LUGAR_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
+      </remove>
+      <remove>
+        <name>PAIS_ORIGEN</name>
+      </remove>
+      <remove>
+        <name>CIUDAD_ORIGEN</name>
+      </remove>
+      <remove>
+        <name>DISTANCIA</name>
+      </remove>
+      <remove>
+        <name>ULTIMA_ACTUALIZACION_2</name>
+      </remove>
+      <remove>
+        <name>fecha_key</name>
+      </remove>
+      <remove>
+        <name>MOTIVO_KEY</name>
+      </remove>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1349,8 +1535,8 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>224</yloc>
+      <xloc>592</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
