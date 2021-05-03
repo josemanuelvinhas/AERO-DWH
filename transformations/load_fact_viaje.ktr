@@ -491,7 +491,7 @@
     </attributes>
   </connection>
   <connection>
-    <name>aero_connection</name>
+    <name>aero_dwh_connection</name>
     <server>localhost</server>
     <type>MYSQL</type>
     <access>Native</access>
@@ -553,11 +553,11 @@
     </hop>
     <hop>
       <from>Entrada Tabla Billete Y Vuelo</from>
-      <to>Obtener fecha_key</to>
+      <to>Obtener fecha_key y Retraso</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Obtener fecha_key</from>
+      <from>Obtener fecha_key y Retraso</from>
       <to>Load dim motivo</to>
       <enabled>Y</enabled>
     </hop>
@@ -567,46 +567,26 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Load dim motivo</from>
+      <from>Load dim lugarDestino</from>
       <to>Load dim lugarOrigen</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Load dim lugarDestino</from>
-      <to>Sort rows</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
       <from>Load dim lugarOrigen</from>
-      <to>Sort rows 2</to>
-      <enabled>N</enabled>
+      <to>Dimension lookup/update</to>
+      <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows</from>
-      <to>Merge join</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 2</from>
-      <to>Select values</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Select values</from>
-      <to>Merge join</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Load dim lugarDestino</from>
-      <to>Load dim lugarOrigen</to>
-      <enabled>N</enabled>
+      <from>Dimension lookup/update</from>
+      <to>Number range</to>
+      <enabled>Y</enabled>
     </hop>
   </order>
   <step>
     <name>Entrada Tabla Billete Y Vuelo</name>
     <type>TableInput</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -615,27 +595,40 @@
     </partitioning>
     <connection>aero_conn</connection>
     <sql>SELECT
-  vuelo.ID_VUELO
-, vuelo.ID_RECORRIDO
-, vuelo.DURACION_ESTIMADA
-, vuelo.DURACION_REAL
-, vuelo.FECHA
-, vuelo.ULTIMA_ACTUALIZACION
-, billete.ID_VUELO
-, billete.ID_PASAJERO
-, billete.MOTIVO_VIAJE
-, billete.PRECIO
-, billete.ULTIMA_ACTUALIZACION
-, recorrido.CIUDAD_DESTINO
-, recorrido.PAIS_DESTINO
-, recorrido.PAIS_ORIGEN
-, recorrido.CIUDAD_ORIGEN
-, recorrido.DISTANCIA
-, recorrido.ULTIMA_ACTUALIZACION
-
-FROM aero.vuelo,aero.billete,aero.recorrido
-WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RECORRIDO
-</sql>
+    vuelo.ID_VUELO,
+    vuelo.ID_RECORRIDO,
+    vuelo.DURACION_ESTIMADA,
+    vuelo.DURACION_REAL,
+    vuelo.FECHA,
+    vuelo.ULTIMA_ACTUALIZACION,
+    BIL.ID_VUELO,
+    BIL.ID_BILLETE,
+    BIL.ID_PASAJERO,
+    BIL.MOTIVO_VIAJE,
+    BIL.PRECIO,
+    BIL.ULTIMA_ACTUALIZACION,
+    REC.CIUDAD_DESTINO,
+    REC.PAIS_DESTINO,
+    REC.PAIS_ORIGEN,
+    REC.CIUDAD_ORIGEN,
+    REC.DISTANCIA,
+    REC.ULTIMA_ACTUALIZACION,
+    (
+    SELECT
+        COUNT(*)
+    FROM
+        aero.billete,
+        aero.vuelo
+    WHERE
+        billete.ID_VUELO = vuelo.ID_VUELO AND vuelo.ID_RECORRIDO = REC.ID_RECORRIDO AND billete.ID_PASAJERO = BIL.ID_PASAJERO
+) AS RECORRIDO_REPETIDO
+FROM
+    aero.vuelo,
+    aero.billete AS BIL,
+    aero.recorrido AS REC
+WHERE
+    vuelo.ID_VUELO = BIL.ID_VUELO AND REC.ID_RECORRIDO = vuelo.ID_RECORRIDO
+    </sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -790,6 +783,29 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
         <origin>Entrada Tabla Billete Y Vuelo</origin>
         <comments>ID_VUELO</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ID_BILLETE</name>
+        <length>10</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>ID_BILLETE</comments>
+        <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol>.</grouping_symbol>
         <currency_symbol/>
@@ -1034,6 +1050,29 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
         <date_format_timezone>Europe/Paris</date_format_timezone>
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>RECORRIDO_REPETIDO</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>Entrada Tabla Billete Y Vuelo</origin>
+        <comments>RECORRIDO_REPETIDO</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
     </row-meta>
     <attributes/>
     <cluster_schema/>
@@ -1060,7 +1099,7 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_connection</connection>
+    <connection>aero_dwh_connection</connection>
     <cache>Y</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
@@ -1114,7 +1153,7 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_connection</connection>
+    <connection>aero_dwh_connection</connection>
     <cache>Y</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
@@ -1152,8 +1191,8 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>320</yloc>
+      <xloc>640</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1168,7 +1207,7 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>aero_connection</connection>
+    <connection>aero_dwh_connection</connection>
     <cache>Y</cache>
     <cache_load_all>N</cache_load_all>
     <cache_size>0</cache_size>
@@ -1206,7 +1245,7 @@ WHERE vuelo.ID_VUELO = billete.ID_VUELO AND recorrido.ID_RECORRIDO = vuelo.ID_RE
     </GUI>
   </step>
   <step>
-    <name>Obtener fecha_key</name>
+    <name>Obtener fecha_key y Retraso</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>N</distribute>
@@ -1234,7 +1273,8 @@ var mes_numero      = simpleDateFormat.format(FECHA);
 simpleDateFormat.applyPattern("d");
 var dia_en_mes      = simpleDateFormat.format(FECHA);
 var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
-</jsScript_script>
+
+var retraso = DURACION_REAL - DURACION_ESTIMADA;</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -1242,6 +1282,14 @@ var fecha_key = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;
         <name>fecha_key</name>
         <rename>fecha_key</rename>
         <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>retraso</name>
+        <rename>retraso</rename>
+        <type>Integer</type>
         <length>-1</length>
         <precision>-1</precision>
         <replace>N</replace>
@@ -1332,8 +1380,8 @@ FROM fact_viaje
     </GUI>
   </step>
   <step>
-    <name>Merge join</name>
-    <type>MergeJoin</type>
+    <name>Dimension lookup/update</name>
+    <type>DimensionLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1342,190 +1390,38 @@ FROM fact_viaje
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows</step1>
-    <step2>Select values</step2>
-    <keys_1>
-      <key>ID_VUELO</key>
-    </keys_1>
-    <keys_2>
-      <key>ID_VUELO</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>752</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
+    <schema>aero_dwh</schema>
+    <table>dim_persona</table>
+    <connection>aero_dwh_connection</connection>
+    <commit>100</commit>
+    <update>N</update>
     <fields>
-      <field>
-        <name>ID_VUELO</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>560</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 2</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>ID_VUELO</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>496</xloc>
-      <yloc>320</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <remove>
-        <name>coalesce(
-		max(ultima_actualizacion),
-		'1970-01-01'
-	)</name>
-      </remove>
-      <remove>
-        <name>ID_RECORRIDO</name>
-      </remove>
-      <remove>
-        <name>DURACION_ESTIMADA</name>
-      </remove>
-      <remove>
-        <name>DURACION_REAL</name>
-      </remove>
-      <remove>
-        <name>FECHA</name>
-      </remove>
-      <remove>
-        <name>ULTIMA_ACTUALIZACION</name>
-      </remove>
-      <remove>
-        <name>ID_VUELO_1</name>
-      </remove>
-      <remove>
+      <key>
         <name>ID_PASAJERO</name>
-      </remove>
-      <remove>
-        <name>MOTIVO_VIAJE</name>
-      </remove>
-      <remove>
-        <name>PRECIO</name>
-      </remove>
-      <remove>
-        <name>ULTIMA_ACTUALIZACION_1</name>
-      </remove>
-      <remove>
-        <name>ID_RECORRIDO_1</name>
-      </remove>
-      <remove>
-        <name>CIUDAD_DESTINO</name>
-      </remove>
-      <remove>
-        <name>PAIS_DESTINO</name>
-      </remove>
-      <remove>
-        <name>PAIS_ORIGEN</name>
-      </remove>
-      <remove>
-        <name>CIUDAD_ORIGEN</name>
-      </remove>
-      <remove>
-        <name>DISTANCIA</name>
-      </remove>
-      <remove>
-        <name>ULTIMA_ACTUALIZACION_2</name>
-      </remove>
-      <remove>
-        <name>fecha_key</name>
-      </remove>
-      <remove>
-        <name>MOTIVO_KEY</name>
-      </remove>
+        <lookup>PASAPORTE</lookup>
+      </key>
+      <date>
+        <name>FECHA</name>
+        <from>VALIDO_DESDE</from>
+        <to>VALIDO_HASTA</to>
+      </date>
+      <return>
+        <name>PERSONA_KEY</name>
+        <rename/>
+        <creation_method>autoinc</creation_method>
+        <use_autoinc>Y</use_autoinc>
+        <version>VERSION</version>
+      </return>
     </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>0</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1535,8 +1431,48 @@ FROM fact_viaje
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
-      <yloc>320</yloc>
+      <xloc>208</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Number range</name>
+    <type>NumberRange</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <inputField>RECORRIDO_REPETIDO</inputField>
+    <outputField>destino_repetido</outputField>
+    <fallBackValue>unknown</fallBackValue>
+    <rules>
+      <rule>
+        <lower_bound>-1.7976931348623157E308</lower_bound>
+        <upper_bound>1.5</upper_bound>
+        <value>No</value>
+      </rule>
+      <rule>
+        <lower_bound>1.5</lower_bound>
+        <upper_bound>1.7976931348623157E308</upper_bound>
+        <value>Si</value>
+      </rule>
+    </rules>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
