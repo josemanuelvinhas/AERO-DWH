@@ -505,7 +505,7 @@
     <hop>
       <from>Valor JavaScript modificado</from>
       <to>Salida Tabla</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
   </order>
   <step>
@@ -798,13 +798,14 @@ var no = local_no.getString();
 
 //inicializar para calculos de dias de la semana
 var dia_de_semana = java.util.Calendar.DAY_OF_WEEK;
+var numero_dia_semana = calendar.get(dia_de_semana);
 
 //comprobar si es fin de semana 
 var es_fin_de_semana;
-if(dia_de_semana==7 || dia_de_semana==1){
-	es_fin_de_semana = si;
+if(calendar.get(dia_de_semana) == 1 || calendar.get(dia_de_semana) == 7){
+	es_fin_de_semana = "si";
 } else {
-	es_fin_de_semana = no;	
+	es_fin_de_semana = "no";	
 }
 
 
@@ -831,7 +832,7 @@ var clave_fecha = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;</j
       <field>
         <name>fecha</name>
         <rename>fecha</rename>
-        <type>Date</type>
+        <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
         <replace>N</replace>
@@ -917,8 +918,8 @@ var clave_fecha = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;</j
         <replace>N</replace>
       </field>
       <field>
-        <name>yes</name>
-        <rename>yes</rename>
+        <name>si</name>
+        <rename>si</rename>
         <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
@@ -933,8 +934,8 @@ var clave_fecha = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;</j
         <replace>N</replace>
       </field>
       <field>
-        <name>dia_de_semana</name>
-        <rename>dia_de_semana</rename>
+        <name>numero_dia_semana</name>
+        <rename>numero_dia_semana</rename>
         <type>Integer</type>
         <length>9</length>
         <precision>0</precision>
