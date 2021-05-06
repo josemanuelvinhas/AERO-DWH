@@ -13,7 +13,7 @@
 ```
 docker pull apache/superset
 ```
-2. Creación de la imagen personalizada a partir del Dockerfile situado en [/docker](https://github.com/josemanuelvinhas/AERO-DWH/tree/main/docker). El siguiente comando debe ser ejecutado donde esté situado el Dockerfile
+2. Creación de la imagen personalizada mediante el Dockerfile situado en [/docker](https://github.com/josemanuelvinhas/AERO-DWH/tree/main/docker). El siguiente comando debe ser ejecutado en el directorio donde esté situado el Dockerfile
 
 ```
 docker build -t superset:latest .
@@ -30,7 +30,7 @@ docker exec -it superset superset load_examples
 
 docker exec -it superset superset init
 ```
-4. Acceder a la url [http://localhost:8080/login/](http://localhost:8080/login/)
+4. Acceso a superset mediante la url [http://localhost:8080/login/](http://localhost:8080/login/)
 ```
 Username: admin
 
@@ -40,7 +40,7 @@ Passwrod: admin
 ```
 GRANT ALL PRIVILEGES ON *.* TO 'superset' IDENTIFIED BY 'superset';
 ```
-6. Se puede probar la conexión desde superset usando la siguiente URI:
+6. Probar la conexión desde superset usando la siguiente URI:
 ```
 mysql://superset:superset@host.docker.internal:3306/sakila_dwh
 ```
