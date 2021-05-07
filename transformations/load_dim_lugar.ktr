@@ -609,6 +609,11 @@
     </hop>
     <hop>
       <from>Number range</from>
+      <to>Valor JavaScript modificado</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Valor JavaScript modificado</from>
       <to>Insert / update</to>
       <enabled>Y</enabled>
     </hop>
@@ -760,7 +765,7 @@ FROM aero.recorrido
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>D:\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_DEMOGRAFIA.txt</name>
+      <name>C:\Users\eliar\Desktop\AERO-DWH-main\AERO-DWH-main\fuentes-externas\FE_DEMOGRAFIA.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -927,7 +932,7 @@ FROM aero.recorrido
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>D:\Vineyards\Desktop\AERO-DWH\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
+    <filename>C:\Users\eliar\Desktop\AERO-DWH-main\AERO-DWH-main\fuentes-externas\FE_CLIMA_TEMPERATURAS.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -1093,6 +1098,11 @@ FROM aero.recorrido
         <rename>MICROCLIMA</rename>
         <update>Y</update>
       </value>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>LUGAR_KEY</rename>
+        <update>N</update>
+      </value>
     </lookup>
     <attributes/>
     <cluster_schema/>
@@ -1221,7 +1231,7 @@ FROM aero.recorrido
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
+      <xloc>1024</xloc>
       <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1543,6 +1553,51 @@ FROM aero.recorrido
     <GUI>
       <xloc>496</xloc>
       <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Valor JavaScript modificado</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+var LUGAR_KEY = CIUDAD + '_' + PAIS;</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>LUGAR_KEY</name>
+        <rename>LUGAR_KEY</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
