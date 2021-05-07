@@ -505,7 +505,7 @@
     <hop>
       <from>Valor JavaScript modificado</from>
       <to>Salida Tabla</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
   </order>
   <step>
@@ -666,7 +666,7 @@
     <fields>
       <field>
         <column_name>fecha</column_name>
-        <stream_name>fecha</stream_name>
+        <stream_name>fecha_mysql</stream_name>
       </field>
       <field>
         <column_name>dia_en_mes</column_name>
@@ -701,7 +701,7 @@
         <stream_name>es_fin_de_semana</stream_name>
       </field>
       <field>
-        <column_name>fecha_key</column_name>
+        <column_name>FECHA_KEY</column_name>
         <stream_name>clave_fecha</stream_name>
       </field>
     </fields>
