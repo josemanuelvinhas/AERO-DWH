@@ -2,6 +2,20 @@
 
 ## Instalación y configuración :wrench:
 
+### Kettel
+
+* [Pentaho Data Integration 9.1.0.0-324 (Kettle)](https://sourceforge.net/projects/pentaho/files/Pentaho%209.1/client-tools/pdi-ce-9.1.0.0-324.zip/download)
+
+1. Modificar _kettel.properties_ y añadir la variable FILES con la ruta del directorio AERO-DWH. Ejemplo: 
+```
+FILES = C:\\jvcid17\\Desktop\\AERO-DWH
+```
+2. Desde las transformaciones y jobs se puede referenciar a esa carpeta usando _${FILES}_. Ejemplo:
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/47904083/117650381-ecbabc80-b190-11eb-8998-f4f71f1e80b5.png">
+</p>
+
 ### XAMPP
 
 * [XAMPP 7.2.9](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.2.9/)
