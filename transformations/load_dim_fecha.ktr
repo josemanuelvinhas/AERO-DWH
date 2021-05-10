@@ -494,22 +494,22 @@
   <order>
     <hop>
       <from>Generar 5 años</from>
-      <to>Day Sequence</to>
+      <to>Generar días</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Day Sequence</from>
-      <to>Valor JavaScript modificado</to>
+      <from>Generar días</from>
+      <to>JavaScript - Cálculo de atributos</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Valor JavaScript modificado</from>
+      <from>JavaScript - Cálculo de atributos</from>
       <to>Salida Tabla</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Day Sequence</name>
+    <name>Generar días</name>
     <type>Sequence</type>
     <description/>
     <distribute>Y</distribute>
@@ -538,7 +538,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>96</xloc>
+      <xloc>544</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
@@ -630,97 +630,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>48</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Salida Tabla</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_connection</connection>
-    <schema/>
-    <table>dim_fecha</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>fecha</column_name>
-        <stream_name>fecha_mysql</stream_name>
-      </field>
-      <field>
-        <column_name>dia_en_mes</column_name>
-        <stream_name>dia_en_mes</stream_name>
-      </field>
-      <field>
-        <column_name>dia_nombre</column_name>
-        <stream_name>dia_nombre</stream_name>
-      </field>
-      <field>
-        <column_name>semana_en_anho</column_name>
-        <stream_name>semana_en_anho</stream_name>
-      </field>
-      <field>
-        <column_name>mes_numero</column_name>
-        <stream_name>mes_numero</stream_name>
-      </field>
-      <field>
-        <column_name>mes_nombre</column_name>
-        <stream_name>mes_nombre</stream_name>
-      </field>
-      <field>
-        <column_name>anho</column_name>
-        <stream_name>anho</stream_name>
-      </field>
-      <field>
-        <column_name>trimestre</column_name>
-        <stream_name>trimestre</stream_name>
-      </field>
-      <field>
-        <column_name>es_fin_de_semana</column_name>
-        <stream_name>es_fin_de_semana</stream_name>
-      </field>
-      <field>
-        <column_name>FECHA_KEY</column_name>
-        <stream_name>clave_fecha</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>368</xloc>
+      <xloc>384</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Valor JavaScript modificado</name>
+    <name>JavaScript - Cálculo de atributos</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
@@ -967,7 +883,91 @@ var clave_fecha = anho + mes_numero + (dia_en_mes&lt;10?"0":"") + dia_en_mes;</j
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
+      <xloc>736</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Salida Tabla</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_connection</connection>
+    <schema/>
+    <table>dim_fecha</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>fecha</column_name>
+        <stream_name>fecha_mysql</stream_name>
+      </field>
+      <field>
+        <column_name>dia_en_mes</column_name>
+        <stream_name>dia_en_mes</stream_name>
+      </field>
+      <field>
+        <column_name>dia_nombre</column_name>
+        <stream_name>dia_nombre</stream_name>
+      </field>
+      <field>
+        <column_name>semana_en_anho</column_name>
+        <stream_name>semana_en_anho</stream_name>
+      </field>
+      <field>
+        <column_name>mes_numero</column_name>
+        <stream_name>mes_numero</stream_name>
+      </field>
+      <field>
+        <column_name>mes_nombre</column_name>
+        <stream_name>mes_nombre</stream_name>
+      </field>
+      <field>
+        <column_name>anho</column_name>
+        <stream_name>anho</stream_name>
+      </field>
+      <field>
+        <column_name>trimestre</column_name>
+        <stream_name>trimestre</stream_name>
+      </field>
+      <field>
+        <column_name>es_fin_de_semana</column_name>
+        <stream_name>es_fin_de_semana</stream_name>
+      </field>
+      <field>
+        <column_name>FECHA_KEY</column_name>
+        <stream_name>clave_fecha</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>912</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>

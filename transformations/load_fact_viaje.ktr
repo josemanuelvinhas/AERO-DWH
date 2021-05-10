@@ -548,63 +548,63 @@
   <order>
     <hop>
       <from>max_fact_viaje_last_update</from>
-      <to>Entrada Tabla Billete Y Vuelo</to>
+      <to>Entrada tabla - Billete - Vuelo - Recorrido</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Entrada Tabla Billete Y Vuelo</from>
-      <to>Calcular retraso</to>
+      <from>Entrada tabla - Billete - Vuelo - Recorrido</from>
+      <to>JavaScript - Calcular retraso</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Load dim motivo</from>
-      <to>Load dim lugarDestino</to>
+      <from>Obtener clave - Motivo</from>
+      <to>Obtener clave - Lugar Destino</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Load dim lugarDestino</from>
-      <to>Load dim lugarOrigen</to>
+      <from>Obtener clave - Lugar Destino</from>
+      <to>Obtener clave - Lugar Origen</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Load dim lugarOrigen</from>
-      <to>Dimension lookup/update</to>
+      <from>Obtener clave - Lugar Origen</from>
+      <to>Obtener clave - Persona</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Dimension lookup/update</from>
-      <to>Number range</to>
+      <from>Obtener clave - Persona</from>
+      <to>Calcular Destino Repetido</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Number range</from>
-      <to>Modified JavaScript value</to>
+      <from>Calcular Destino Repetido</from>
+      <to>JavaScript - Calcular Fecha Evento</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Modified JavaScript value</from>
-      <to>Database lookup</to>
+      <from>JavaScript - Calcular Fecha Evento</from>
+      <to>Obtener clave - Evento</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Database lookup</from>
-      <to>Insert / update</to>
+      <from>Obtener clave - Evento</from>
+      <to>Insertar / actualizar</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Calcular retraso</from>
-      <to>Database lookup 2</to>
+      <from>JavaScript - Calcular retraso</from>
+      <to>Obtener clave - Fecha</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Database lookup 2</from>
-      <to>Load dim motivo</to>
+      <from>Obtener clave - Fecha</from>
+      <to>Obtener clave - Motivo</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Dimension lookup/update</name>
-    <type>DimensionLookup</type>
+    <name>Calcular Destino Repetido</name>
+    <type>NumberRange</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -613,38 +613,21 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <schema>aero_dwh</schema>
-    <table>dim_persona</table>
-    <connection>aero_dwh_connection</connection>
-    <commit>100</commit>
-    <update>N</update>
-    <fields>
-      <key>
-        <name>ID_PASAJERO</name>
-        <lookup>PASAPORTE</lookup>
-      </key>
-      <date>
-        <name>FECHA</name>
-        <from>VALIDO_DESDE</from>
-        <to>VALIDO_HASTA</to>
-      </date>
-      <return>
-        <name>PERSONA_KEY</name>
-        <rename/>
-        <creation_method>autoinc</creation_method>
-        <use_autoinc>Y</use_autoinc>
-        <version>VERSION</version>
-      </return>
-    </fields>
-    <sequence/>
-    <min_year>1900</min_year>
-    <max_year>2199</max_year>
-    <cache_size>0</cache_size>
-    <preload_cache>N</preload_cache>
-    <use_start_date_alternative>N</use_start_date_alternative>
-    <start_date_alternative>none</start_date_alternative>
-    <start_date_field_name/>
-    <useBatch>N</useBatch>
+    <inputField>RECORRIDO_REPETIDO</inputField>
+    <outputField>destino_repetido</outputField>
+    <fallBackValue>unknown</fallBackValue>
+    <rules>
+      <rule>
+        <lower_bound>-1.7976931348623157E308</lower_bound>
+        <upper_bound>1.5</upper_bound>
+        <value>No</value>
+      </rule>
+      <rule>
+        <lower_bound>1.5</lower_bound>
+        <upper_bound>1.7976931348623157E308</upper_bound>
+        <value>Si</value>
+      </rule>
+    </rules>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -654,13 +637,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
-      <yloc>384</yloc>
+      <xloc>736</xloc>
+      <yloc>528</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Entrada Tabla Billete Y Vuelo</name>
+    <name>Entrada tabla - Billete - Vuelo - Recorrido</name>
     <type>TableInput</type>
     <description/>
     <distribute>N</distribute>
@@ -1160,399 +1143,13 @@ WHERE
       </output>
     </remotesteps>
     <GUI>
-      <xloc>384</xloc>
+      <xloc>432</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Load dim lugarDestino</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_dwh_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_lugar</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>CIUDAD_DESTINO</name>
-        <field>CIUDAD</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>PAIS_DESTINO</name>
-        <field>PAIS</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>LUGAR_KEY</name>
-        <rename>DESTINO_LUGAR_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>448</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Load dim lugarOrigen</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_dwh_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_lugar</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>CIUDAD_ORIGEN</name>
-        <field>CIUDAD</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>PAIS_ORIGEN</name>
-        <field>PAIS</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>LUGAR_KEY</name>
-        <rename>ORIGEN_LUGAR_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Load dim motivo</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_dwh_connection</connection>
-    <cache>Y</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_motivo</table>
-      <orderby/>
-      <fail_on_multiple>Y</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>MOTIVO_VIAJE</name>
-        <field>MOTIVO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>MOTIVO_KEY</name>
-        <rename>MOTIVO_KEY</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Number range</name>
-    <type>NumberRange</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <inputField>RECORRIDO_REPETIDO</inputField>
-    <outputField>destino_repetido</outputField>
-    <fallBackValue>unknown</fallBackValue>
-    <rules>
-      <rule>
-        <lower_bound>-1.7976931348623157E308</lower_bound>
-        <upper_bound>1.5</upper_bound>
-        <value>No</value>
-      </rule>
-      <rule>
-        <lower_bound>1.5</lower_bound>
-        <upper_bound>1.7976931348623157E308</upper_bound>
-        <value>Si</value>
-      </rule>
-    </rules>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Calcular retraso</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var RETRASO = DURACION_REAL - DURACION_ESTIMADA;</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>RETRASO</name>
-        <rename>RETRASO</rename>
-        <type>Number</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>512</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>max_fact_viaje_last_update</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_dwh_connection</connection>
-    <sql>SELECT
-	coalesce(
-		max(ultima_actualizacion),
-		'1970-01-01'
-	)
-FROM fact_viaje
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Database lookup</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>aero_dwh_connection</connection>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>aero_dwh</schema>
-      <table>dim_evento</table>
-      <orderby/>
-      <fail_on_multiple>N</fail_on_multiple>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <key>
-        <name>PAIS_DESTINO</name>
-        <field>PAIS_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>FECHA</name>
-        <field>FECHA_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>CIUDAD_DESTINO</name>
-        <field>CIUDAD_EVENTO</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>EVENTO_KEY</name>
-        <rename>EVENTO_KEY</rename>
-        <default/>
-        <type>None</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>528</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Modified JavaScript value</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>//Script here
-
-var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>FECHA_EVENTO</name>
-        <rename>FECHA_EVENTO</rename>
-        <type>Date</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
-      <yloc>528</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Insert / update</name>
+    <name>Insertar / actualizar</name>
     <type>InsertUpdate</type>
     <description/>
     <distribute>Y</distribute>
@@ -1615,11 +1212,6 @@ var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
         <update>Y</update>
       </value>
       <value>
-        <name>MOTIVO_KEY</name>
-        <rename>MOTIVO_KEY</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>ULTIMA_ACTUALIZACION</name>
         <rename>ULTIMA_ACTUALIZACION_BILLETE</rename>
         <update>Y</update>
@@ -1627,6 +1219,11 @@ var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
       <value>
         <name>DESTINO_REPETIDO</name>
         <rename>RECORRIDO_REPETIDO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>MOTIVO_KEY</name>
+        <rename>MOTIVO_KEY</rename>
         <update>Y</update>
       </value>
       <value>
@@ -1644,13 +1241,163 @@ var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>640</xloc>
-      <yloc>688</yloc>
+      <xloc>736</xloc>
+      <yloc>832</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Database lookup 2</name>
+    <name>JavaScript - Calcular Fecha Evento</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>FECHA_EVENTO</name>
+        <rename>FECHA_EVENTO</rename>
+        <type>Date</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>672</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>JavaScript - Calcular retraso</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var RETRASO = DURACION_REAL - DURACION_ESTIMADA;</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>RETRASO</name>
+        <rename>RETRASO</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Evento</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connection</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_evento</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>PAIS_DESTINO</name>
+        <field>PAIS_EVENTO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>FECHA</name>
+        <field>FECHA_EVENTO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>CIUDAD_DESTINO</name>
+        <field>CIUDAD_EVENTO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>EVENTO_KEY</name>
+        <rename>EVENTO_KEY</rename>
+        <default/>
+        <type>None</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>672</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Fecha</name>
     <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
@@ -1692,7 +1439,260 @@ var FECHA_EVENTO = new Date(FECHA.getTime()+86400000);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>720</xloc>
+      <xloc>128</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Lugar Destino</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connection</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_lugar</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>CIUDAD_DESTINO</name>
+        <field>CIUDAD</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PAIS_DESTINO</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>DESTINO_LUGAR_KEY</rename>
+        <default/>
+        <type>String</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Lugar Origen</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_lugar</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>CIUDAD_ORIGEN</name>
+        <field>CIUDAD</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PAIS_ORIGEN</name>
+        <field>PAIS</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LUGAR_KEY</name>
+        <rename>ORIGEN_LUGAR_KEY</rename>
+        <default/>
+        <type>String</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Motivo</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connection</connection>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>aero_dwh</schema>
+      <table>dim_motivo</table>
+      <orderby/>
+      <fail_on_multiple>Y</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>MOTIVO_VIAJE</name>
+        <field>MOTIVO</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>MOTIVO_KEY</name>
+        <rename>MOTIVO_KEY</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Obtener clave - Persona</name>
+    <type>DimensionLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>aero_dwh</schema>
+    <table>dim_persona</table>
+    <connection>aero_dwh_connection</connection>
+    <commit>100</commit>
+    <update>N</update>
+    <fields>
+      <key>
+        <name>ID_PASAJERO</name>
+        <lookup>PASAPORTE</lookup>
+      </key>
+      <date>
+        <name>FECHA</name>
+        <from>VALIDO_DESDE</from>
+        <to>VALIDO_HASTA</to>
+      </date>
+      <return>
+        <name>PERSONA_KEY</name>
+        <rename/>
+        <creation_method>autoinc</creation_method>
+        <use_autoinc>Y</use_autoinc>
+        <version>VERSION</version>
+      </return>
+    </fields>
+    <sequence/>
+    <min_year>1900</min_year>
+    <max_year>2199</max_year>
+    <cache_size>0</cache_size>
+    <preload_cache>N</preload_cache>
+    <use_start_date_alternative>N</use_start_date_alternative>
+    <start_date_alternative>none</start_date_alternative>
+    <start_date_field_name/>
+    <useBatch>N</useBatch>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>528</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>max_fact_viaje_last_update</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>aero_dwh_connection</connection>
+    <sql>SELECT
+	coalesce(
+		max(ultima_actualizacion),
+		'1970-01-01'
+	)
+FROM fact_viaje
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
