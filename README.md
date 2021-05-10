@@ -10,7 +10,9 @@
 ```
 FILES = C:\\jvcid17\\Desktop\\AERO-DWH
 ```
-2. Desde las transformaciones y jobs se puede referenciar a esa carpeta usando _${FILES}_. Ejemplo:
+2. Reiniciar Kettel para poder usar la variable añadida
+
+3. Desde las transformaciones y jobs se puede referenciar a esa carpeta usando _${FILES}_. Ejemplo:
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/47904083/117650381-ecbabc80-b190-11eb-8998-f4f71f1e80b5.png">
