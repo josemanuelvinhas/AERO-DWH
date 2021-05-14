@@ -22,7 +22,9 @@ FILES = C:\\jvcid17\\Desktop\\AERO-DWH
 
 * [XAMPP 7.2.9](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.2.9/)
 
-### Apache Superset con Docker
+### Apache Superset
+
+## Apache Superset con Docker
 
 1. Descargar la imagen apache/superset
 
@@ -78,6 +80,34 @@ docker stop superset
 docker start superset
 ```
 
+## Apache Superset - Procesado de  Templates
+
+1. Inicio de sesión interactiva en docker superset
+```
+docker exec -u 0 -it superset /bin/bash
+```
+2. Actualización de repos de apt e instalación de nano para edición de config.py
+```
+apt-get update
+apt-get install nano
+```
+3. Edición de config.py de Superset para activación de procesamiento de plantillas
+```
+nano superset/config.py
+```
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/47904083/118299002-83181680-b4e0-11eb-88d0-c63d6d640bf3.png">
+</p>
+
+```
+superset init
+```
+
+4. Parar e iniciar el contenedor
+```
+docker stop superset
+docker start superset
+```
 
 
 ## Autores :black_nib:
