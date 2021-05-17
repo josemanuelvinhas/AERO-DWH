@@ -680,9 +680,11 @@
       <schema_name/>
     </partitioning>
     <connection>aero_connection</connection>
-    <sql>SELECT DISTINCT
-	CIUDAD_ORIGEN,
-	PAIS_ORIGEN
+    <sql>SELECT
+  CIUDAD_ORIGEN
+, PAIS_ORIGEN
+, ORIGEN
+, COD_PAIS_ORIGEN 
 FROM aero.recorrido
 </sql>
     <limit>0</limit>
@@ -698,7 +700,7 @@ FROM aero.recorrido
         <name>CIUDAD_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla Recorrido</origin>
+        <origin>Entrada Tabla - Recorrido</origin>
         <comments>CIUDAD_ORIGEN</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -711,7 +713,7 @@ FROM aero.recorrido
         <sort_descending>N</sort_descending>
         <output_padding>N</output_padding>
         <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
+        <date_format_locale>es_ES</date_format_locale>
         <date_format_timezone>Europe/Paris</date_format_timezone>
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
@@ -721,7 +723,7 @@ FROM aero.recorrido
         <name>PAIS_ORIGEN</name>
         <length>50</length>
         <precision>-1</precision>
-        <origin>Entrada Tabla Recorrido</origin>
+        <origin>Entrada Tabla - Recorrido</origin>
         <comments>PAIS_ORIGEN</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
@@ -734,7 +736,53 @@ FROM aero.recorrido
         <sort_descending>N</sort_descending>
         <output_padding>N</output_padding>
         <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ORIGEN</name>
+        <length>3</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla - Recorrido</origin>
+        <comments>ORIGEN</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>COD_PAIS_ORIGEN</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>Entrada Tabla - Recorrido</origin>
+        <comments>COD_PAIS_ORIGEN</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol>.</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
         <date_format_timezone>Europe/Paris</date_format_timezone>
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
@@ -750,6 +798,36 @@ FROM aero.recorrido
     <GUI>
       <xloc>64</xloc>
       <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filas únicas</name>
+    <type>Unique</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <count_rows>N</count_rows>
+    <count_field/>
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description/>
+    <fields>      </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1101,6 +1179,16 @@ FROM aero.recorrido
         <name2/>
       </key>
       <value>
+        <name>COD_PAIS</name>
+        <rename>COD_PAIS_ORIGEN</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>COD_CIUDAD</name>
+        <rename>ORIGEN</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>CIUDAD</name>
         <rename>CIUDAD</rename>
         <update>Y</update>
@@ -1128,7 +1216,7 @@ FROM aero.recorrido
       <value>
         <name>LUGAR_KEY</name>
         <rename>LUGAR_KEY</rename>
-        <update>N</update>
+        <update>Y</update>
       </value>
     </lookup>
     <attributes/>
@@ -1469,46 +1557,6 @@ var LUGAR_KEY = CIUDAD + '_' + PAIS;</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Select columnas - Clima</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <remove>
-        <name>DIA</name>
-      </remove>
-      <remove>
-        <name>TEMPERATURA</name>
-      </remove>
-      <remove>
-        <name>PRECIPITACIONES</name>
-      </remove>
-      <remove>
-        <name>PRESION</name>
-      </remove>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Select columas - Join</name>
     <type>SelectValues</type>
     <description/>
@@ -1549,8 +1597,8 @@ var LUGAR_KEY = CIUDAD + '_' + PAIS;</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Filas únicas</name>
-    <type>Unique</type>
+    <name>Select columnas - Clima</name>
+    <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1559,11 +1607,21 @@ var LUGAR_KEY = CIUDAD + '_' + PAIS;</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <count_rows>N</count_rows>
-    <count_field/>
-    <reject_duplicate_row>N</reject_duplicate_row>
-    <error_description/>
-    <fields>      </fields>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>DIA</name>
+      </remove>
+      <remove>
+        <name>TEMPERATURA</name>
+      </remove>
+      <remove>
+        <name>PRECIPITACIONES</name>
+      </remove>
+      <remove>
+        <name>PRESION</name>
+      </remove>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1573,7 +1631,7 @@ var LUGAR_KEY = CIUDAD + '_' + PAIS;</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
+      <xloc>224</xloc>
       <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
