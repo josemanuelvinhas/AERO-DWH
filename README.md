@@ -29,7 +29,7 @@ FILES = C:\\jvcid17\\Desktop\\AERO-DWH
 1. Descargar la imagen apache/superset
 
 ```
-docker pull apache/superset
+docker pull apache/superset:01de3096b3688266c3895b65285d52d0063be3b5
 ```
 2. Creación de la imagen personalizada mediante el Dockerfile situado en [/docker](https://github.com/josemanuelvinhas/AERO-DWH/tree/main/docker). El siguiente comando debe ser ejecutado en el directorio donde esté situado el Dockerfile
 
