@@ -109,6 +109,39 @@ docker stop superset
 docker start superset
 ```
 
+#### Apache Superset - Añadir token mapbox
+
+1. Inicio de sesión interactiva en docker superset
+```
+docker exec -u 0 -it superset /bin/bash
+```
+2. Actualización de repos de apt e instalación de nano para edición de config.py
+```
+apt-get update
+apt-get install nano
+```
+3. Edición de config.py de Superset para añadir el token de mapbox
+```
+nano superset/config.py
+```
+4. Editar la variable MAPBOX_API_KEY y añadir el token
+```
+pk.eyJ1IjoianZjaWQxNyIsImEiOiJja290c3QwaG8wMDE0MnFrM216cWU2NTB3In0._R5Txs8HuuMCAOSsCkflrw
+```
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/47904083/118623376-7b9a8b00-b7c8-11eb-900b-295385d17548.png">
+</p>
+
+```
+superset init
+```
+
+5. Parar e iniciar el contenedor
+```
+docker stop superset
+docker start superset
+```
+
 
 ## Autores :black_nib:
 
