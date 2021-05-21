@@ -142,6 +142,36 @@ docker stop superset
 docker start superset
 ```
 
+#### Apache Superset - Permitir Javascript para MapBox
+
+1. Inicio de sesión interactiva en docker superset
+```
+docker exec -u 0 -it superset /bin/bash
+```
+2. Actualización de repos de apt e instalación de nano para edición de config.py
+```
+apt-get update
+apt-get install nano
+```
+3. Edición de config.py de Superset para añadir el token de mapbox
+```
+nano superset/config.py
+```
+4. Editar la variable ENABLE_JAVASCRIPT_CONTROLS y ponerla a _True_
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/47904083/119103307-4df95000-ba1b-11eb-920b-afe888b629fa.png">
+</p>
+
+```
+superset init
+```
+
+5. Parar e iniciar el contenedor
+```
+docker stop superset
+docker start superset
+```
 
 ## Autores :black_nib:
 
