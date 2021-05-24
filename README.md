@@ -153,7 +153,7 @@ docker exec -u 0 -it superset /bin/bash
 apt-get update
 apt-get install nano
 ```
-3. Edición de config.py de Superset para añadir el token de mapbox
+3. Edición de config.py de Superset para permitir Javascript
 ```
 nano superset/config.py
 ```
